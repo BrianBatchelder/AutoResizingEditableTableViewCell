@@ -7,7 +7,6 @@
 //
 
 #import "EditableTableViewCell.h"
-#import "JFTextViewNoInset.h"
 
 static const CGFloat kTextViewWidth = 320;
 
@@ -28,7 +27,7 @@ static UITextView *dummyTextView;
 @synthesize text;
 
 + (UITextView *)createTextView {
-    UITextView *newTextView = [[JFTextViewNoInset alloc] initWithFrame:CGRectZero];
+    UITextView *newTextView = [[UITextView alloc] initWithFrame:CGRectZero];
     newTextView.font = textViewFont;
     newTextView.backgroundColor = [UIColor whiteColor];
     newTextView.opaque = YES;
@@ -101,9 +100,10 @@ static UITextView *dummyTextView;
 - (void)setText:(NSMutableString *)newText {
     if (newText != text) {
         [text release];
-        text = [newText retain];
+        text = [newText copy];
         textView.text = newText;
         NSLog(@"New height: %f", textView.contentSize.height);
+        [self textViewDidChange:textView];
     }
 }
 
@@ -120,7 +120,7 @@ static UITextView *dummyTextView;
 
 
 - (void)textViewDidEndEditing:(UITextView *)theTextView {
-    [text setString:theTextView.text];
+    text = [[NSMutableString alloc] initWithString:theTextView.text];
 
     if ([delegate respondsToSelector:@selector(editableTableViewCellDidEndEditing:)]) {
         [delegate editableTableViewCellDidEndEditing:self];
