@@ -53,7 +53,8 @@ static UITextView *dummyTextView;
     
     CGSize textSize = dummyTextView.contentSize;
     
-    return textSize.height + kBottomPadding + kTopPadding - 1;
+    CGFloat heightForText = textSize.height + kBottomPadding + kTopPadding + 1;
+    return heightForText;
 }
 
 
@@ -139,7 +140,8 @@ static UITextView *dummyTextView;
 
 
 - (CGFloat)suggestedHeight {
-    return textView.contentSize.height + kTopPadding + kBottomPadding - 1;
+    CGFloat suggestedHeight = [textView sizeThatFits:CGSizeMake(textView.contentSize.width,FLT_MAX)].height + kTopPadding + kBottomPadding + 1;
+    return suggestedHeight;
 }
 
 #pragma mark -
